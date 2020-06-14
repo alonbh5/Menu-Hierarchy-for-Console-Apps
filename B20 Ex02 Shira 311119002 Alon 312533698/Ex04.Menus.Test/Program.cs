@@ -32,32 +32,10 @@ namespace Ex04.Menus.Test
             subMenu2.AddOption("Show Time", ShowTime);
             subMenu2.AddOption("Show Date", ShowDate);
 
-            /* subMenu1.MakeBack(myManu.Show);
-
-             myManu3.Options.Add(new Option("Show Time", ShowTime, myManu2.Index));
-             myManu3.Options.Add(new Option("Show Date", ShowDate, myManu2.Index));
-
-             myManu2.Options.Add(new Option("Show Version", ShowVersion, myManu3.Index));
-             myManu2.Options.Add(new Option("Count Capitals", CountCapitals, myManu3.Index));
-
-             myManu.Options.Add(new Option("Version and Digits", myManu2.Show, myManu.Index));
-             myManu.Options.Add(new Option("Show Date/Time", myManu3.Show, myManu.Index));
-             */
+            
             myManu.Show();
 
-            //myManu.AllOptions += ShowTime;
-            //myManu.AllOptions += new myOption(new Option());
-
-            /*mymanu2 += ("Count Capitals", CountCapitals);
-            mymanu2 += ("Show version", ShowVersion);
-            // my manu 0 = exit
-            mymanu3 + = ("show time", showtime);
-            mymanu3 + = ("show date", ShowVersion);
-            // my manu 0 = exit
-            mymanu + = ("Version and Digits", mymanu2.show());
-            mymanu + = ("show date/time", mymanu3.show());
-
-            mymanu.show();*/
+            
         }              
 
         public static void CountCapitals()

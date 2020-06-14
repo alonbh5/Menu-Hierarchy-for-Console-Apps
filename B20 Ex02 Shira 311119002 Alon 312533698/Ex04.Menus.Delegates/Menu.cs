@@ -72,7 +72,7 @@ namespace Ex04.Menus.Delegates
             subManu.Options[0].Text = "Back";
             
             
-            subManu.Options[0].Do -= ExitSystem;
+            subManu.Options[0].Do -= subManu.ExitSystem;
             subManu.Options[0].Do += Show;
 
             AddOption(title, subManu.Show);
