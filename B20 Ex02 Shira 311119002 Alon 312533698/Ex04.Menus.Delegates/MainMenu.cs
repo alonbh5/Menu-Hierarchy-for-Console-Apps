@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
@@ -7,59 +7,71 @@ using System.Threading.Tasks;
 
 namespace Ex04.Menus.Delegates
 {    
-    public delegate void UpdateLevelSubMenu(int i_NewLevel); 
+    public delegate void UpdateLevelSubMenuDelegate(int i_NewLevel); 
 
     public class MainMenu
-    { 
-        private int s_Index = 0;
-        internal string m_Title;
-        internal int m_Level;
-        internal List<Option> Options = new List<Option>();
-        public event UpdateLevelSubMenu BecameSubMenu;
+    {
+        public event UpdateLevelSubMenuDelegate BecameSubMenu;
+
+        private readonly List<MenuItem> r_MenuItems = new List<MenuItem>();
+        private int m_Index = 0;
+        private string m_Title;
+        private int m_Level;
 
         public MainMenu(string i_Title)
         {
             m_Title = i_Title;
             m_Level = 0;
-            AddOption("Exit", ExitSystem);           
+            AddMenuItem("Exit", ExitSystem);           
         }
 
         public string Title
         {
-            get { return m_Title;}
-            set { m_Title = value;}
+            get { return m_Title; }
+            set { m_Title = value; }
         }
+
         public int Level
         {
             get { return m_Level; }
             set { m_Level = value; }
-        }   
-
-        public void AddOption (string i_OptionTitle, Action i_FunctionToAdd) 
-        {
-            Option newOption = new Option(s_Index++);
-            newOption.Do += i_FunctionToAdd;
-            newOption.Text = i_OptionTitle;
-            Options.Add(newOption);
         }
 
-        public void AddOption(string i_OptionTitle, MainMenu io_SubManu)
+        private int Index
         {
-            io_SubManu.Options[0].Text = "Back";
-            io_SubManu.Options[0].Do -= io_SubManu.ExitSystem;
-            io_SubManu.Options[0].Do += Show;
+            get { return m_Index; }
+            set { m_Index = value; }
+        }
 
-            AddOption(i_OptionTitle, io_SubManu.Show);
+        public List<MenuItem> MenuItems
+        {
+            get { return r_MenuItems; }
+        }
 
-            //subManu.Level = Level;
-            io_SubManu.OnBecameSubMenu(Level+1);
-            BecameSubMenu += io_SubManu.OnBecameSubMenu;
+        public void AddMenuItem(string i_MenuItemTitle, Action i_FunctionToAdd)
+        {
+            MenuItem newMenuItem = new MenuItem(Index++);
+
+            newMenuItem.Do += i_FunctionToAdd;
+            newMenuItem.Title = i_MenuItemTitle;
+            MenuItems.Add(newMenuItem);
+        }
+
+        public void AddMenuItem(string i_MenuItemTitle, MainMenu io_SubMenu)
+        {
+            io_SubMenu.MenuItems[0].Title = "Back";
+            io_SubMenu.MenuItems[0].Do -= io_SubMenu.ExitSystem;
+            io_SubMenu.MenuItems[0].Do += Show;
+
+            AddMenuItem(i_MenuItemTitle, io_SubMenu.Show);
+            io_SubMenu.OnBecameSubMenu(Level + 1);
+            BecameSubMenu += io_SubMenu.OnBecameSubMenu;
         }
 
         public void OnBecameSubMenu(int io_NewLevel)
-        {
-            
+        {            
             Level = io_NewLevel;
+
             if (BecameSubMenu != null)
             {
                 BecameSubMenu.Invoke(io_NewLevel + 1);
@@ -73,18 +85,15 @@ namespace Ex04.Menus.Delegates
 
         public void Show()
         {
-            Console.Clear();
-            int choice;
-            bool flag = true;
-            
+            bool show = true;            
 
             printScreen();
 
-            while (flag)
+            while (show)
             {
-                getInput(out choice);
+                getInput(out int choice);
                 Console.Clear();
-                Options[choice].Invoke();
+                MenuItems[choice].Invoke();
                 Console.WriteLine("Press any key to continue..");                
                 Console.ReadKey();
                 printScreen();
@@ -95,52 +104,23 @@ namespace Ex04.Menus.Delegates
         {
             Console.Clear();
             Console.WriteLine("Menu level: {0}{1}====={2}=====", Level, Environment.NewLine, Title);
-            foreach (Option curOption in Options)
+
+            foreach (MenuItem currMenuItem in MenuItems)
             {
-                Console.WriteLine("{0} - {1}", curOption.m_Index, curOption.Text);
+                Console.WriteLine("{0}. {1}", currMenuItem.Index, currMenuItem.Title);
             }
         }
 
-        private void getInput (out int io_Input)
+        private void getInput(out int io_Input)
         {
             io_Input = -1;
 
-            Console.WriteLine("Please choose from option or press 0 to Quit/Back:");
-            int.TryParse(Console.ReadLine(), out io_Input);
+            Console.WriteLine("Please choose one of these options or press 0 to Quit/Back:");
 
-            while (io_Input < 0 || io_Input >= Options.Count())
+            while (!int.TryParse(Console.ReadLine(), out io_Input) || io_Input < 0 || io_Input >= MenuItems.Count())
             {
-                Console.WriteLine("Wrong Input - Try again!");
-                int.TryParse(Console.ReadLine(), out io_Input);
+                Console.WriteLine("Wrong Input - Try Again!");
             }
-
         }
-    }
-
-    public class Option
-    {      
-        public event Action Do;
-        internal int m_Index;
-        protected string m_Text;
-
-        public Option(int i_Index)
-        {
-            m_Index = i_Index;
-        }
-
-        public string Text
-        {
-            get { return m_Text; }
-            set { m_Text = value; }
-        }
-
-         public void Invoke()
-        {
-            if (Do != null)
-            {
-                Do.Invoke();
-            }
-        }        
-        
     }
 }
