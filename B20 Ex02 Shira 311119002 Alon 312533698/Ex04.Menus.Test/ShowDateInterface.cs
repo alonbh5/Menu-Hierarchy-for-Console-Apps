@@ -8,7 +8,7 @@ using Ex04.Menus.Interfaces;
 
 namespace Ex04.Menus.Test
 {
-    class ShowDateInterface : IClicked
+    internal class ShowDateInterface : IClicked
     {
         public void Execut()
         {

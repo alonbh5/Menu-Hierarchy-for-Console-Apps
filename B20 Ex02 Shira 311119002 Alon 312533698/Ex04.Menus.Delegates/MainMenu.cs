@@ -114,8 +114,7 @@ namespace Ex04.Menus.Delegates
 
             foreach (MenuItem currMenuItem in MenuItems)
             {
-                currMenuItem.Show();
-                
+                currMenuItem.Show();                
             }
         }
 

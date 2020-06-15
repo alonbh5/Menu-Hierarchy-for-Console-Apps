@@ -10,14 +10,14 @@ namespace Ex04.Menus.Interfaces
     {
         void UpdateLevel(int i_NewLevel);
     }
+
     public class MainMenu : IClicked, ISubMenu
     {        
         private readonly List<MenuItem> r_MenuItems = new List<MenuItem>();
         private readonly List<ISubMenu> r_SubMenus = new List<ISubMenu>();
         private int m_Index = 0;
         private string m_Title;
-        private int m_Level;
-        
+        private int m_Level;        
 
         public MainMenu(string i_Title)
         {
@@ -50,8 +50,8 @@ namespace Ex04.Menus.Interfaces
         }
 
         public void AddMenuItem(string i_Title, IClicked i_Item)
-        {            
-            MenuItems.Add(new MenuItem(Index++,i_Title,i_Item));            
+        {
+            MenuItems.Add(new MenuItem(Index++, i_Title, i_Item));         
         }
 
         public void AddMenuItem(string i_Title, MainMenu io_SubMenu)
@@ -64,7 +64,6 @@ namespace Ex04.Menus.Interfaces
             io_SubMenu.UpdateLevel(Level + 1);
             r_SubMenus.Add(io_SubMenu);
         }
-
 
         public void Show()
         {
@@ -90,8 +89,7 @@ namespace Ex04.Menus.Interfaces
 
             foreach (MenuItem currMenuItem in MenuItems)
             {
-                currMenuItem.Show();
-                //Console.WriteLine("{0}. {1}", currMenuItem.Index, currMenuItem.Title);
+                currMenuItem.Show();                
             }
         }
 

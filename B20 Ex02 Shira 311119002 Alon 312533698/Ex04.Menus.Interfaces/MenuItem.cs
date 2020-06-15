@@ -13,11 +13,11 @@ namespace Ex04.Menus.Interfaces
 
     public class MenuItem 
     {
-        protected string m_Title;
+        private string m_Title;
         private int m_Index;
-        IClicked m_WhenClicked;
+        private IClicked m_WhenClicked;
 
-        public MenuItem(int i_Index,string i_Title, IClicked i_WhenClicked)
+        public MenuItem(int i_Index, string i_Title, IClicked i_WhenClicked)
         {
             m_Index = i_Index;
             m_Title = i_Title;

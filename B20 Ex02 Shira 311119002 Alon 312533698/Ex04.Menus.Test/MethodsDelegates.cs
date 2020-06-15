@@ -1,9 +1,4 @@
-using Ex04.Menus.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex04.Menus.Test
 {
@@ -39,7 +34,6 @@ namespace Ex04.Menus.Test
         public static void ShowDate()
         {           
             Console.WriteLine(DateTime.Now.ToShortDateString());
-        }
-        
+        }        
     }
 }

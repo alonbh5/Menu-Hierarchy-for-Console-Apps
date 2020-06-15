@@ -8,7 +8,7 @@ using Ex04.Menus.Interfaces;
 
 namespace Ex04.Menus.Test
 {
-    class CountCapitalsInterface : IClicked
+    internal class CountCapitalsInterface : IClicked
     {
         public void Execut()
         {
