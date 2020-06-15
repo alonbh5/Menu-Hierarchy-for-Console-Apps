@@ -22,7 +22,7 @@ namespace Ex04.Menus.Delegates
         {
             m_Title = i_Title;
             m_Level = 0;
-            AddMenuItem("Exit", ExitSystem);           
+            AddMenuItem("Exit", exit_Clicked);           
         }
 
         public string Title
@@ -52,7 +52,7 @@ namespace Ex04.Menus.Delegates
         {
             MenuItem newMenuItem = new MenuItem(Index++);
 
-            newMenuItem.Do += i_FunctionToAdd;
+            newMenuItem.Clicked += i_FunctionToAdd;
             newMenuItem.Title = i_MenuItemTitle;
             MenuItems.Add(newMenuItem);
         }
@@ -60,8 +60,8 @@ namespace Ex04.Menus.Delegates
         public void AddMenuItem(string i_MenuItemTitle, MainMenu io_SubMenu)
         {
             io_SubMenu.MenuItems[0].Title = "Back";
-            io_SubMenu.MenuItems[0].Do -= io_SubMenu.ExitSystem;
-            io_SubMenu.MenuItems[0].Do += Show;
+            io_SubMenu.MenuItems[0].Clicked -= io_SubMenu.exit_Clicked;
+            io_SubMenu.MenuItems[0].Clicked += Show;
 
             AddMenuItem(i_MenuItemTitle, io_SubMenu.Show);
             io_SubMenu.OnBecameSubMenu(Level + 1);
@@ -78,36 +78,37 @@ namespace Ex04.Menus.Delegates
             }
         }
 
-        private void ExitSystem()
-        {
+        private void exit_Clicked()
+        {            
             Environment.Exit(-1);
         }
 
         public void Show()
         {
-            bool show = true;            
+            bool quit = false;
 
-            printScreen();
+            printMenu();
 
-            while (show)
+            while (!quit)
             {
                 getInput(out int choice);
                 Console.Clear();
-                MenuItems[choice].Invoke();
+                MenuItems[choice].OnClicked();
                 Console.WriteLine("Press any key to continue..");                
                 Console.ReadKey();
-                printScreen();
+                printMenu();
             }
         }
 
-        private void printScreen()
+        private void printMenu()
         {
             Console.Clear();
             Console.WriteLine("Menu level: {0}{1}====={2}=====", Level, Environment.NewLine, Title);
 
             foreach (MenuItem currMenuItem in MenuItems)
             {
-                Console.WriteLine("{0}. {1}", currMenuItem.Index, currMenuItem.Title);
+                currMenuItem.Show();
+                //Console.WriteLine("{0}. {1}", currMenuItem.Index, currMenuItem.Title);
             }
         }
 

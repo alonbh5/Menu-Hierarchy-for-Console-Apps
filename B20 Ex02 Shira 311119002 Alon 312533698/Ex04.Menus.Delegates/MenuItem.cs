@@ -8,7 +8,7 @@ namespace Ex04.Menus.Delegates
 {
     public class MenuItem
     {
-        public event Action Do;
+        public event Action Clicked;
 
         protected string m_Title;
         private int m_Index;
@@ -29,11 +29,16 @@ namespace Ex04.Menus.Delegates
             get { return m_Index; }
         }
 
-        public void Invoke()
+        public void Show()
         {
-            if (Do != null)
+            Console.WriteLine("{0}. {1}", Index, Title);
+        }
+
+        public void OnClicked()
+        {
+            if (Clicked != null)
             {
-                Do.Invoke();
+                Clicked.Invoke();
             }
         }
     }
