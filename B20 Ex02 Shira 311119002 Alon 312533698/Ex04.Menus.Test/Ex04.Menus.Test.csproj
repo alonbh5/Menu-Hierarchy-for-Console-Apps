@@ -36,7 +36,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Methods.cs" />
+    <Compile Include="CountCapitalsInterface.cs" />
+    <Compile Include="Menus.cs" />
+    <Compile Include="MethodsDelegates.cs" />
+    <Compile Include="ShowDateInterface.cs" />
+    <Compile Include="ShowTimeInterface.cs" />
+    <Compile Include="ShowVersionInterface.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>

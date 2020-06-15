@@ -1,28 +1,29 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ex04.Menus.Delegates
-{    
-    public delegate void UpdateLevelSubMenuDelegate(int i_NewLevel); 
-
-    public class MainMenu
+namespace Ex04.Menus.Interfaces
+{
+    public interface ISubMenu
     {
-        public event UpdateLevelSubMenuDelegate BecameSubMenu;
-
+        void UpdateLevel(int i_NewLevel);
+    }
+    public class MainMenu : IClicked, ISubMenu
+    {        
         private readonly List<MenuItem> r_MenuItems = new List<MenuItem>();
+        private readonly List<ISubMenu> r_SubMenus = new List<ISubMenu>();
         private int m_Index = 0;
         private string m_Title;
         private int m_Level;
+        
 
         public MainMenu(string i_Title)
         {
             m_Title = i_Title;
             m_Level = 0;
-            AddMenuItem("Exit", exit_Clicked);           
+            AddMenuItem("Exit", new ExitInterface());
         }
 
         public string Title
@@ -48,40 +49,22 @@ namespace Ex04.Menus.Delegates
             get { return r_MenuItems; }
         }
 
-        public void AddMenuItem(string i_MenuItemTitle, Action i_FunctionToAdd)
-        {
-            MenuItem newMenuItem = new MenuItem(Index++);
-
-            newMenuItem.Clicked += i_FunctionToAdd;
-            newMenuItem.Title = i_MenuItemTitle;
-            MenuItems.Add(newMenuItem);
+        public void AddMenuItem(string i_Title, IClicked i_Item)
+        {            
+            MenuItems.Add(new MenuItem(Index++,i_Title,i_Item));            
         }
 
-        public void AddMenuItem(string i_MenuItemTitle, MainMenu io_SubMenu)
+        public void AddMenuItem(string i_Title, MainMenu io_SubMenu)
         {
             io_SubMenu.MenuItems[0].Title = "Back";
-            io_SubMenu.MenuItems[0].Clicked -= io_SubMenu.exit_Clicked;
-            io_SubMenu.MenuItems[0].Clicked += Show;
+            io_SubMenu.MenuItems[0].WhenClicked = this;
 
-            AddMenuItem(i_MenuItemTitle, io_SubMenu.Show);
-            io_SubMenu.OnBecameSubMenu(Level + 1);
-            BecameSubMenu += io_SubMenu.OnBecameSubMenu;
+            AddMenuItem(i_Title, io_SubMenu as IClicked);
+
+            io_SubMenu.UpdateLevel(Level + 1);
+            r_SubMenus.Add(io_SubMenu);
         }
 
-        public void OnBecameSubMenu(int io_NewLevel)
-        {            
-            Level = io_NewLevel;
-
-            if (BecameSubMenu != null)
-            {
-                BecameSubMenu.Invoke(io_NewLevel + 1);
-            }
-        }
-
-        private void exit_Clicked()
-        {            
-            Environment.Exit(-1);
-        }
 
         public void Show()
         {
@@ -92,18 +75,11 @@ namespace Ex04.Menus.Delegates
             while (!quit)
             {
                 getInput(out int choice);
-                if (choice == 0 && Level == 0)   
-                {
-                    quit = true;
-                }
-                else
-                {
-                    Console.Clear();
-                    MenuItems[choice].OnClicked();
-                    Console.WriteLine("Press any key to continue..");
-                    Console.ReadKey();
-                    printMenu();
-                }
+                Console.Clear();
+                MenuItems[choice].Click();
+                Console.WriteLine("Press any key to continue..");
+                Console.ReadKey();
+                printMenu();
             }
         }
 
@@ -115,7 +91,7 @@ namespace Ex04.Menus.Delegates
             foreach (MenuItem currMenuItem in MenuItems)
             {
                 currMenuItem.Show();
-                
+                //Console.WriteLine("{0}. {1}", currMenuItem.Index, currMenuItem.Title);
             }
         }
 
@@ -128,6 +104,24 @@ namespace Ex04.Menus.Delegates
             while (!int.TryParse(Console.ReadLine(), out io_Input) || io_Input < 0 || io_Input >= MenuItems.Count())
             {
                 Console.WriteLine("Wrong Input - Try Again!");
+            }
+        }
+
+        void IClicked.Execut()
+        {
+            this.Show();
+        }
+
+        public void UpdateLevel(int i_NewLevel)
+        {
+            Level = i_NewLevel;
+
+            if (r_SubMenus != null)
+            {
+                foreach (ISubMenu curSubMenu in r_SubMenus)
+                {
+                    curSubMenu.UpdateLevel(Level + 1);
+                }
             }
         }
     }
