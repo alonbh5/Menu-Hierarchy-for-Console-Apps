@@ -20,7 +20,7 @@ namespace Ex04.Menus.Interfaces
         public MainMenu(string i_Title)
         {
             m_Title = i_Title;
-            m_Level = 0;
+            m_Level = 1;
             AddMenuItem("Exit", new ExitInterface());
         }
 
@@ -61,8 +61,10 @@ namespace Ex04.Menus.Interfaces
         {
             io_SubMenu.MenuItems[0].Title = "Back";
             io_SubMenu.MenuItems[0].WhenClicked = this;
+            io_SubMenu.MenuItems[0].IsMenu = true;
 
             AddMenuItem(io_SubMenu.Title, io_SubMenu as IClicked);
+            MenuItems[MenuItems.Count() - 1].IsMenu = true;
 
             io_SubMenu.UpdateLevel(Level + 1);
             r_SubMenus.Add(io_SubMenu);
@@ -70,19 +72,37 @@ namespace Ex04.Menus.Interfaces
 
         public void Show()
         {
-            bool quit = false;
+            bool quit = false;             
 
             printMenu();
 
             while (!quit)
             {
                 getInput(out int choice);
-                Console.Clear();
-                MenuItems[choice].Click();
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
-                printMenu();
-            }
+
+                ////**This condition added only for The drill demonstration**
+                ////**in order to "bypass" Main menu 'exit' (Environment.Exit) option**
+                if (choice == 0 && Level == 1)
+                {
+                    quit = true;
+                }
+                else 
+                {
+                    Console.Clear();
+                    MenuItems[choice].Click();
+
+                    if (MenuItems[choice].IsMenu)
+                    {
+                        quit = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Press any key to continue...");
+                        Console.ReadKey();
+                        printMenu();
+                    }
+                }
+            }  
         }
 
         private void printMenu()

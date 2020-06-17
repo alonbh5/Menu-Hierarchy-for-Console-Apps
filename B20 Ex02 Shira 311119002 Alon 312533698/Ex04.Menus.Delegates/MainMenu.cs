@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace Ex04.Menus.Delegates
 {    
-    public delegate void UpdateLevelSubMenuDelegate(int i_NewLevel); 
+    public delegate void UpdateLevelSubMenuDelegate(int i_NewLevel);
 
     public class MainMenu
     {
-        public event UpdateLevelSubMenuDelegate BecameSubMenu;
+        internal event UpdateLevelSubMenuDelegate BecameSubMenu;
 
         private readonly List<MenuItem> r_MenuItems = new List<MenuItem>();
         private string m_Title;
@@ -17,18 +17,19 @@ namespace Ex04.Menus.Delegates
 
         public MainMenu(string i_Title)
         {
+            //// Default State of any menu is MainMenu (level is 1, option 0 is exit system) 
             m_Title = i_Title;
-            m_Level = 0;
-            AddMenuItem("Exit", exit_Clicked);           
+            m_Level = 1;
+            AddMenuItem("Exit", exit_Clicked);
         }
 
-        public string Title
+        internal string Title
         {
             get { return m_Title; }
             set { m_Title = value; }
         }
 
-        public int Level
+        private int Level
         {
             get { return m_Level; }
             set { m_Level = value; }
@@ -40,15 +41,17 @@ namespace Ex04.Menus.Delegates
             set { m_Index = value; }
         }
 
-        public List<MenuItem> MenuItems
+        private List<MenuItem> MenuItems
         {
             get { return r_MenuItems; }
         }
 
-        public void AddMenuItem(string i_MenuItemTitle, Action i_FunctionToAdd)
+        public void AddMenuItem(string i_MenuItemTitle, ClickInvoker i_FunctionToAdd)
         {
+            ////Adds new item to the menu - gets item name, and function to do
+            ////Add the item to next available index in menu 
+            
             MenuItem newMenuItem = new MenuItem(Index++);
-
             newMenuItem.Clicked += i_FunctionToAdd;
             newMenuItem.Title = i_MenuItemTitle;
             MenuItems.Add(newMenuItem);
@@ -56,17 +59,22 @@ namespace Ex04.Menus.Delegates
 
         public void AddMenuItem(MainMenu io_SubMenu)
         {
+            ////Gets a new SubMenu to the menu 
+            ////Change SubMenu option 0 from "exit" to "back" & Add the SubMenu to next available index in menu 
+
             io_SubMenu.MenuItems[0].Title = "Back";
+            io_SubMenu.MenuItems[0].IsMenu = true;
             io_SubMenu.MenuItems[0].Clicked -= io_SubMenu.exit_Clicked;
             io_SubMenu.MenuItems[0].Clicked += Show;
 
             AddMenuItem(io_SubMenu.Title, io_SubMenu.Show);
+            MenuItems[MenuItems.Count() - 1].IsMenu = true;
             io_SubMenu.OnBecameSubMenu(Level + 1);
             BecameSubMenu += io_SubMenu.OnBecameSubMenu;
         }
 
-        public void OnBecameSubMenu(int io_NewLevel)
-        {            
+        internal void OnBecameSubMenu(int io_NewLevel)
+        {
             Level = io_NewLevel;
 
             if (BecameSubMenu != null)
@@ -76,12 +84,12 @@ namespace Ex04.Menus.Delegates
         }
 
         private void exit_Clicked()
-        {            
+        {
             Environment.Exit(-1);
         }
 
         public void Show()
-        {
+        {            
             bool quit = false;
 
             printMenu();
@@ -89,20 +97,21 @@ namespace Ex04.Menus.Delegates
             while (!quit)
             {
                 getInput(out int choice);
-                if (choice == 0 && Level == 0)   
+                Console.Clear();
+                MenuItems[choice].OnClicked();
+
+                if (MenuItems[choice].IsMenu)
                 {
                     quit = true;
                 }
                 else
                 {
-                    Console.Clear();
-                    MenuItems[choice].OnClicked();
                     Console.WriteLine("Press any key to continue...");
                     Console.ReadKey();
                     printMenu();
                 }
             }
-        }
+        }    
 
         private void printMenu()
         {

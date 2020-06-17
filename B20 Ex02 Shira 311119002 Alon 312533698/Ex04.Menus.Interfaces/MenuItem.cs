@@ -9,8 +9,9 @@ namespace Ex04.Menus.Interfaces
 
     public class MenuItem 
     {
-        private string m_Title;
         private readonly int r_Index;
+        private bool m_IsMenu = false;
+        private string m_Title;        
         private IClicked m_WhenClicked;
 
         public MenuItem(int i_Index, string i_Title, IClicked i_WhenClicked)
@@ -25,7 +26,13 @@ namespace Ex04.Menus.Interfaces
             get { return m_Title; }
             set { m_Title = value; }
         }
-        
+
+        public bool IsMenu
+        {
+            get { return m_IsMenu; }
+            set { m_IsMenu = value; }
+        }
+
         public IClicked WhenClicked
         {
             get { return m_WhenClicked; }

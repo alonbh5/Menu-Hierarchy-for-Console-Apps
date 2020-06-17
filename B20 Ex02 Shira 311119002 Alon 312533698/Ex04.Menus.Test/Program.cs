@@ -4,13 +4,13 @@ namespace Ex04.Menus.Test
     {
         public static void Main()
         {
-            Delegates.MainMenu DelegateMenu = Menus.CreateMainMenuDelegate();
-
-            DelegateMenu.Show();
-
             Interfaces.MainMenu InterfaceMenu = Menus.CreateMainMenuInterfaces();
 
             InterfaceMenu.Show();
+
+            Delegates.MainMenu DelegateMenu = Menus.CreateMainMenuDelegate();
+
+            DelegateMenu.Show();            
         }
     }
 }
