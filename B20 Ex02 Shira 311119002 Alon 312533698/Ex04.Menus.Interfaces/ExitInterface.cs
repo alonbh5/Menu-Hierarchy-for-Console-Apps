@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 
 namespace Ex04.Menus.Interfaces
 {
     internal class ExitInterface : IClicked
     {
-        public void Execut()
+        public void Execute()
         {
             Environment.Exit(-1);
         }

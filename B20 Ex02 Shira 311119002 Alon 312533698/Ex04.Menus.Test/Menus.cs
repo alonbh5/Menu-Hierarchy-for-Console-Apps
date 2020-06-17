@@ -1,6 +1,3 @@
-﻿using Ex04.Menus.Delegates;
-using Ex04.Menus.Interfaces;
-
 namespace Ex04.Menus.Test
 {
     internal class Menus
@@ -13,8 +10,8 @@ namespace Ex04.Menus.Test
 
             subMenu1.AddMenuItem("Count Capitals", MethodsDelegates.CountCapitals);
             subMenu1.AddMenuItem("Show Version", MethodsDelegates.ShowVersion);
-            myMenu.AddMenuItem("Version and Digits", subMenu1);
-            myMenu.AddMenuItem("Show Date/Time", subMenu2);
+            myMenu.AddMenuItem(subMenu1);
+            myMenu.AddMenuItem(subMenu2);
             subMenu2.AddMenuItem("Show Time", MethodsDelegates.ShowTime);
             subMenu2.AddMenuItem("Show Date", MethodsDelegates.ShowDate);
 
@@ -29,8 +26,8 @@ namespace Ex04.Menus.Test
 
             subMenu1.AddMenuItem("Count Capitals", new CountCapitalsInterface());
             subMenu1.AddMenuItem("Show Version", new ShowVersionInterface());
-            myMenu.AddMenuItem("Version and Digits", subMenu1);
-            myMenu.AddMenuItem("Show Date/Time", subMenu2);
+            myMenu.AddMenuItem(subMenu1);
+            myMenu.AddMenuItem(subMenu2);
             subMenu2.AddMenuItem("Show Time", new ShowTimeInterface());
             subMenu2.AddMenuItem("Show Date", new ShowDateInterface());
 

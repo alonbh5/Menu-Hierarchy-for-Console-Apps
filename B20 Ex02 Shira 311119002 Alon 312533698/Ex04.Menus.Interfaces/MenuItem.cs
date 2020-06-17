@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
 namespace Ex04.Menus.Interfaces
 {
     public interface IClicked
     {
-        void Execut();
+        void Execute();
     }
 
     public class MenuItem 
     {
         private string m_Title;
-        private int m_Index;
+        private readonly int r_Index;
         private IClicked m_WhenClicked;
 
         public MenuItem(int i_Index, string i_Title, IClicked i_WhenClicked)
         {
-            m_Index = i_Index;
+            r_Index = i_Index;
             m_Title = i_Title;
             m_WhenClicked = i_WhenClicked;
         }
@@ -38,7 +34,7 @@ namespace Ex04.Menus.Interfaces
 
         public int Index
         {
-            get { return m_Index; }
+            get { return r_Index; }
         }
 
         public void Show()
@@ -48,7 +44,7 @@ namespace Ex04.Menus.Interfaces
 
         public void Click()
         {
-            WhenClicked.Execut();
+            WhenClicked.Execute();
         }
     }
 }

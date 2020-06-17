@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex04.Menus.Interfaces
 {
@@ -15,8 +13,8 @@ namespace Ex04.Menus.Interfaces
     {        
         private readonly List<MenuItem> r_MenuItems = new List<MenuItem>();
         private readonly List<ISubMenu> r_SubMenus = new List<ISubMenu>();
-        private int m_Index = 0;
         private string m_Title;
+        private int m_Index = 0;
         private int m_Level;        
 
         public MainMenu(string i_Title)
@@ -49,17 +47,22 @@ namespace Ex04.Menus.Interfaces
             get { return r_MenuItems; }
         }
 
+        public List<ISubMenu> SubMenus
+        {
+            get { return r_SubMenus; }
+        }
+
         public void AddMenuItem(string i_Title, IClicked i_Item)
         {
             MenuItems.Add(new MenuItem(Index++, i_Title, i_Item));         
         }
 
-        public void AddMenuItem(string i_Title, MainMenu io_SubMenu)
+        public void AddMenuItem(MainMenu io_SubMenu)
         {
             io_SubMenu.MenuItems[0].Title = "Back";
             io_SubMenu.MenuItems[0].WhenClicked = this;
 
-            AddMenuItem(i_Title, io_SubMenu as IClicked);
+            AddMenuItem(io_SubMenu.Title, io_SubMenu as IClicked);
 
             io_SubMenu.UpdateLevel(Level + 1);
             r_SubMenus.Add(io_SubMenu);
@@ -76,7 +79,7 @@ namespace Ex04.Menus.Interfaces
                 getInput(out int choice);
                 Console.Clear();
                 MenuItems[choice].Click();
-                Console.WriteLine("Press any key to continue..");
+                Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
                 printMenu();
             }
@@ -105,7 +108,7 @@ namespace Ex04.Menus.Interfaces
             }
         }
 
-        void IClicked.Execut()
+        void IClicked.Execute()
         {
             this.Show();
         }
@@ -114,11 +117,11 @@ namespace Ex04.Menus.Interfaces
         {
             Level = i_NewLevel;
 
-            if (r_SubMenus != null)
+            if (SubMenus != null)
             {
-                foreach (ISubMenu curSubMenu in r_SubMenus)
+                foreach (ISubMenu currSubMenu in SubMenus)
                 {
-                    curSubMenu.UpdateLevel(Level + 1);
+                    currSubMenu.UpdateLevel(Level + 1);
                 }
             }
         }

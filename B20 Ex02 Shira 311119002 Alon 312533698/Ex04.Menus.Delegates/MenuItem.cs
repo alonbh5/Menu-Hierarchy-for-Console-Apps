@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex04.Menus.Delegates
 {
@@ -11,11 +7,11 @@ namespace Ex04.Menus.Delegates
         public event Action Clicked;
 
         protected string m_Title;
-        private int m_Index;
+        private readonly int r_Index;
 
         public MenuItem(int i_Index)
         {
-            m_Index = i_Index;
+            r_Index = i_Index;
         }
 
         public string Title
@@ -26,7 +22,7 @@ namespace Ex04.Menus.Delegates
 
         public int Index
         {
-            get { return m_Index; }
+            get { return r_Index; }
         }
 
         public void Show()

@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex04.Menus.Delegates
 {    
@@ -14,8 +11,8 @@ namespace Ex04.Menus.Delegates
         public event UpdateLevelSubMenuDelegate BecameSubMenu;
 
         private readonly List<MenuItem> r_MenuItems = new List<MenuItem>();
-        private int m_Index = 0;
         private string m_Title;
+        private int m_Index = 0;
         private int m_Level;
 
         public MainMenu(string i_Title)
@@ -57,13 +54,13 @@ namespace Ex04.Menus.Delegates
             MenuItems.Add(newMenuItem);
         }
 
-        public void AddMenuItem(string i_MenuItemTitle, MainMenu io_SubMenu)
+        public void AddMenuItem(MainMenu io_SubMenu)
         {
             io_SubMenu.MenuItems[0].Title = "Back";
             io_SubMenu.MenuItems[0].Clicked -= io_SubMenu.exit_Clicked;
             io_SubMenu.MenuItems[0].Clicked += Show;
 
-            AddMenuItem(i_MenuItemTitle, io_SubMenu.Show);
+            AddMenuItem(io_SubMenu.Title, io_SubMenu.Show);
             io_SubMenu.OnBecameSubMenu(Level + 1);
             BecameSubMenu += io_SubMenu.OnBecameSubMenu;
         }
@@ -100,7 +97,7 @@ namespace Ex04.Menus.Delegates
                 {
                     Console.Clear();
                     MenuItems[choice].OnClicked();
-                    Console.WriteLine("Press any key to continue..");
+                    Console.WriteLine("Press any key to continue...");
                     Console.ReadKey();
                     printMenu();
                 }
