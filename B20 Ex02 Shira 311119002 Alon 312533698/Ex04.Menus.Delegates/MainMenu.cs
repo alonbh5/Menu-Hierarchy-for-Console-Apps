@@ -48,8 +48,8 @@ namespace Ex04.Menus.Delegates
 
         public void AddMenuItem(string i_MenuItemTitle, ClickInvoker i_FunctionToAdd)
         {
-            ////Adds new item to the menu - gets item name, and function to do
-            ////Add the item to next available index in menu 
+            //// Adds new item to the menu - gets item name, and function to do
+            //// Add the item to next available index in menu 
             
             MenuItem newMenuItem = new MenuItem(Index++);
             newMenuItem.Clicked += i_FunctionToAdd;
@@ -59,8 +59,8 @@ namespace Ex04.Menus.Delegates
 
         public void AddMenuItem(MainMenu io_SubMenu)
         {
-            ////Gets a new SubMenu to the menu 
-            ////Change SubMenu option 0 from "exit" to "back" & Add the SubMenu to next available index in menu 
+            //// Gets a new SubMenu to add the menu 
+            //// Change SubMenu option 0 from "Exit" to "Back" & add the SubMenu to next available index in menu 
 
             io_SubMenu.MenuItems[0].Title = "Back";
             io_SubMenu.MenuItems[0].IsMenu = true;

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Ex04.Menus.Interfaces
 {
-    public interface ISubMenu
+    internal interface ISubMenu
     {
         void UpdateLevel(int i_NewLevel);
     }
@@ -47,7 +47,7 @@ namespace Ex04.Menus.Interfaces
             get { return r_MenuItems; }
         }
 
-        public List<ISubMenu> SubMenus
+        internal List<ISubMenu> SubMenus
         {
             get { return r_SubMenus; }
         }
@@ -82,6 +82,7 @@ namespace Ex04.Menus.Interfaces
 
                 ////**This condition added only for The drill demonstration**
                 ////**in order to "bypass" Main menu 'exit' (Environment.Exit) option**
+                
                 if (choice == 0 && Level == 1)
                 {
                     quit = true;

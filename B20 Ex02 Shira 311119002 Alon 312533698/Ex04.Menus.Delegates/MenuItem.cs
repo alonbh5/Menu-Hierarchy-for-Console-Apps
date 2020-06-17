@@ -6,10 +6,9 @@ namespace Ex04.Menus.Delegates
     
     public class MenuItem
     {
-        private readonly int r_Index;
-
         internal event ClickInvoker Clicked;
 
+        private readonly int r_Index;
         private string m_Title;        
         private bool m_IsMenu = false;
 

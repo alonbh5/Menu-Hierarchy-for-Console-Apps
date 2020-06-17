@@ -6,7 +6,7 @@ namespace Ex04.Menus.Test
         {
             Delegates.MainMenu myMenu = new Delegates.MainMenu("Main Menu - Delegates");
             Delegates.MainMenu subMenu1 = new Delegates.MainMenu("Version and Digits");
-            Delegates.MainMenu subMenu2 = new Delegates.MainMenu("Show Date/Time");
+            Delegates.MainMenu subMenu2 = new Delegates.MainMenu("Show Date / Time");
 
             subMenu1.AddMenuItem("Count Capitals", MethodsDelegates.CountCapitals);
             subMenu1.AddMenuItem("Show Version", MethodsDelegates.ShowVersion);
