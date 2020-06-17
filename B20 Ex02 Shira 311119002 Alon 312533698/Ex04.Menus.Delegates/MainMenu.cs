@@ -18,6 +18,7 @@ namespace Ex04.Menus.Delegates
         public MainMenu(string i_Title)
         {
             //// Default State of any menu is MainMenu (level is 1, option 0 is exit system) 
+            
             m_Title = i_Title;
             m_Level = 1;
             AddMenuItem("Exit", exit_Clicked);
@@ -51,16 +52,14 @@ namespace Ex04.Menus.Delegates
             //// Adds new item to the menu - gets item name, and function to do
             //// Add the item to next available index in menu 
             
-            MenuItem newMenuItem = new MenuItem(Index++);
-            newMenuItem.Clicked += i_FunctionToAdd;
-            newMenuItem.Title = i_MenuItemTitle;
-            MenuItems.Add(newMenuItem);
+            MenuItems.Add(new MenuItem(Index++, i_MenuItemTitle, i_FunctionToAdd));
         }
 
         public void AddMenuItem(MainMenu io_SubMenu)
         {
-            //// Gets a new SubMenu to add the menu 
-            //// Change SubMenu option 0 from "Exit" to "Back" & add the SubMenu to next available index in menu 
+            //// Gets a new SubMenu to add the menu.
+            //// Change SubMenu option 0 from "Exit" to "Back" & add the SubMenu to next available index in menu.
+            //// Update both [option 0 and new sub menu] flag "IsMenu" to be recognized as submenu.
 
             io_SubMenu.MenuItems[0].Title = "Back";
             io_SubMenu.MenuItems[0].IsMenu = true;
@@ -73,7 +72,7 @@ namespace Ex04.Menus.Delegates
             BecameSubMenu += io_SubMenu.OnBecameSubMenu;
         }
 
-        internal void OnBecameSubMenu(int io_NewLevel)
+        private void OnBecameSubMenu(int io_NewLevel)
         {
             Level = io_NewLevel;
 

@@ -4,7 +4,7 @@ namespace Ex04.Menus.Delegates
 {
     public delegate void ClickInvoker();  
     
-    public class MenuItem
+    internal class MenuItem
     {
         internal event ClickInvoker Clicked;
 
@@ -12,9 +12,11 @@ namespace Ex04.Menus.Delegates
         private string m_Title;        
         private bool m_IsMenu = false;
 
-        internal MenuItem(int i_Index)
+        internal MenuItem(int i_Index, string i_Title, ClickInvoker i_Clicked)
         {
             r_Index = i_Index;
+            m_Title = i_Title;
+            Clicked += i_Clicked;
         }
 
         internal string Title
@@ -29,7 +31,7 @@ namespace Ex04.Menus.Delegates
             set { m_IsMenu = value; }
         }
 
-        internal int Index
+        public int Index
         {
             get { return r_Index; }
         }
@@ -39,7 +41,7 @@ namespace Ex04.Menus.Delegates
             Console.WriteLine("{0}. {1}", Index, Title);
         }
 
-        internal void OnClicked()
+        public void OnClicked()
         {
             if (Clicked != null)
             {

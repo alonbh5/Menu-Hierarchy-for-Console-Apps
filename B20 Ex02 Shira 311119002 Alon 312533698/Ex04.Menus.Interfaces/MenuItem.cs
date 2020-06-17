@@ -7,14 +7,14 @@ namespace Ex04.Menus.Interfaces
         void Execute();
     }
 
-    public class MenuItem 
+    internal class MenuItem 
     {
         private readonly int r_Index;
         private bool m_IsMenu = false;
         private string m_Title;        
         private IClicked m_WhenClicked;
 
-        public MenuItem(int i_Index, string i_Title, IClicked i_WhenClicked)
+        internal MenuItem(int i_Index, string i_Title, IClicked i_WhenClicked)
         {
             r_Index = i_Index;
             m_Title = i_Title;
@@ -27,7 +27,7 @@ namespace Ex04.Menus.Interfaces
             set { m_Title = value; }
         }
 
-        public bool IsMenu
+        internal bool IsMenu
         {
             get { return m_IsMenu; }
             set { m_IsMenu = value; }

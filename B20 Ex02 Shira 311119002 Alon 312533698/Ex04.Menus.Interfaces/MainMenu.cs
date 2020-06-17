@@ -19,18 +19,20 @@ namespace Ex04.Menus.Interfaces
 
         public MainMenu(string i_Title)
         {
+            //// Default State of any menu is MainMenu (level is 1, option 0 is exit system) 
+
             m_Title = i_Title;
             m_Level = 1;
             AddMenuItem("Exit", new ExitInterface());
         }
 
-        public string Title
+        internal string Title
         {
             get { return m_Title; }
             set { m_Title = value; }
         }
 
-        public int Level
+        private int Level
         {
             get { return m_Level; }
             set { m_Level = value; }
@@ -42,23 +44,30 @@ namespace Ex04.Menus.Interfaces
             set { m_Index = value; }
         }
 
-        public List<MenuItem> MenuItems
+        private List<MenuItem> MenuItems
         {
             get { return r_MenuItems; }
         }
 
-        internal List<ISubMenu> SubMenus
+        private List<ISubMenu> SubMenus
         {
             get { return r_SubMenus; }
         }
 
         public void AddMenuItem(string i_Title, IClicked i_Item)
         {
+            //// Adds new item to the menu - gets item name, and function to do
+            //// Add the item to next available index in menu 
+            
             MenuItems.Add(new MenuItem(Index++, i_Title, i_Item));         
         }
 
         public void AddMenuItem(MainMenu io_SubMenu)
         {
+            //// Gets a new SubMenu to add the menu.
+            //// Change SubMenu option 0 from "Exit" to "Back" & add the SubMenu to next available index in menu.
+            //// Update both [option 0 and new sub menu] flag "IsMenu" to be recognized as submenu.
+            
             io_SubMenu.MenuItems[0].Title = "Back";
             io_SubMenu.MenuItems[0].WhenClicked = this;
             io_SubMenu.MenuItems[0].IsMenu = true;
